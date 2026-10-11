@@ -1,0 +1,81 @@
+/* ============================================================
+   Food Save — Global styles & responsive mobile app shell
+   ------------------------------------------------------------
+   The Figma design is mobile-first (375 / 390 / 430 px). This
+   web app renders inside ONE shared .app-shell that is full
+   width on phones and capped at 430px, centred on desktop.
+   Pages never manage their own centring or max-width.
+   ============================================================ */
+
+/* ---- Reset ---- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* ---- Base ---- */
+body {
+  font-family: var(--font-family-base);
+  color: var(--color-text-primary);
+  background-color: var(--color-page-backdrop); /* visible only outside the shell on desktop */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+/* Images scale with their container, never distort or overflow */
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 1rem; /* >= 16px prevents iOS focus zoom */
+}
+
+/* ---- Responsive mobile app shell ----
+   - width: 100% on phones (375 / 390 / 430px targets)
+   - capped at 430px and horizontally centred on desktop
+   - white app surface on a neutral page backdrop
+   - overflow-x hidden as a safety net; layout itself must
+     never trigger horizontal scrolling */
+.app-shell {
+  width: 100%;
+  max-width: var(--app-max-width);
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  background-color: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+  box-shadow: var(--shadow-shell);
+}

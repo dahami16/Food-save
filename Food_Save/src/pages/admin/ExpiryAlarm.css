@@ -1,0 +1,233 @@
+/* ============================================================
+   Expiry Alarm (Hotel Admin) — route /admin/expiry-alarm
+   Cleaner Food Save admin design (white — the old dark Figma
+   skin is intentionally NOT recreated). One compact card per
+   product from the shared adminProducts state: thumbnail, name,
+   expiry date, independent reminder toggle. No BottomNavigation.
+   ============================================================ */
+
+.expiry-alarm-page {
+  min-height: 100dvh;
+  background-color: #ffffff;
+}
+
+.expiry-alarm-page__content {
+  padding: 8px 20px 32px;
+}
+
+/* ---- Intro (heading + description) ---- */
+.expiry-alarm-page__title {
+  margin: 8px 0 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 36px;
+  letter-spacing: 0.18px;
+  color: #010f07;
+}
+
+.expiry-alarm-page__description {
+  margin: 8px 0 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.4px;
+  color: #868686;
+}
+
+/* ---- Reminder list ---- */
+.expiry-alarm-page__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* ---- Reminder card ---- */
+.reminder-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #f1f1f1;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(1, 15, 7, 0.04);
+}
+
+/* Small square thumbnail — cover keeps it proportional, the
+   fixed size stops it overflowing the card. */
+.reminder-card__image {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.reminder-card__text {
+  flex: 1;
+  min-width: 0; /* long names wrap instead of overflowing */
+}
+
+.reminder-card__name {
+  margin: 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: -0.2px;
+  color: #010f07;
+  overflow-wrap: anywhere;
+}
+
+.reminder-card__expiry {
+  margin: 4px 0 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: -0.2px;
+}
+
+.reminder-card__expiry-label {
+  color: #868686;
+}
+
+/* The date itself: slightly stronger than the 400 label. */
+.reminder-card__expiry-date {
+  color: #010f07;
+  font-weight: 600;
+}
+
+/* ---- Empty state ---- */
+.expiry-alarm-page__empty {
+  margin: 20px 0 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.2px;
+  color: #868686;
+}
+
+/* ---- Reminder toggle (independent per product) ----
+   Same switch metrics as the Account Settings toggles:
+   46x24 track, 22px thumb, 22px travel.
+   ON  -> #EEA734 track, white thumb right.
+   OFF -> rgba(134,134,134,0.20) track, white thumb left. */
+.reminder-card__toggle {
+  position: relative;
+  width: 46px;
+  height: 24px;
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background-color: rgba(134, 134, 134, 0.2);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.reminder-card__toggle[aria-checked='true'] {
+  background-color: var(--color-primary);
+}
+
+.reminder-card__toggle:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.reminder-card__toggle-thumb {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.reminder-card__toggle[aria-checked='true'] .reminder-card__toggle-thumb {
+  transform: translateX(22px); /* 46 - 22 - 2 = 22px travel */
+}
+
+/* ============================================================
+   Stage 3C — live backend records: loading / error / banner
+   states, expired badge, image fallback and disabled toggle.
+   ============================================================ */
+
+.expiry-alarm-page__state {
+  margin: 20px 0 0;
+  padding: 24px 8px;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.expiry-alarm-page__state--error p {
+  color: var(--color-error);
+}
+
+.expiry-alarm-page__retry {
+  margin-top: 12px;
+  padding: 8px 16px;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  background-color: #ffffff;
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.expiry-alarm-page__retry:hover {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.expiry-alarm-page__banner {
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(217, 48, 37, 0.35);
+  background-color: rgba(217, 48, 37, 0.06);
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-error);
+  overflow-wrap: anywhere;
+}
+
+.reminder-card__expired-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background-color: rgba(217, 48, 37, 0.12);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 700;
+  color: var(--color-error);
+  vertical-align: middle;
+}
+
+.reminder-card__image--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  color: #868686;
+}
+
+.reminder-card__toggle:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

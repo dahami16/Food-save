@@ -1,0 +1,421 @@
+/* ============================================================
+   Admin Home (Hotel Admin) — route /admin
+   White background; no BottomNavigation (admin pages use
+   PageHeader + page actions only). Product cards stack
+   vertically — never narrow side-by-side columns on mobile.
+   ============================================================ */
+
+.admin-home-page {
+  min-height: 100dvh;
+  background-color: #ffffff;
+}
+
+.admin-home-page__content {
+  padding: 8px 20px 32px; /* ~20px horizontal page padding */
+}
+
+/* ---- Header logout button (left slot of the centred PageHeader) ----
+   Matches the reusable header back-button metrics (44px touch
+   target, 24px icon, subtle dark colour) so the title stays
+   perfectly centred and the icon reads as a peer control. */
+.admin-home-page__logout-button {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start; /* icon aligns with the header's 20px padding */
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  color: #010f07;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.admin-home-page__logout-button:hover {
+  color: var(--color-primary);
+}
+
+.admin-home-page__logout-button:focus-visible {
+  outline: 2px solid #010f07;
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Intro (heading + description) ---- */
+.admin-home-page__title {
+  margin: 8px 0 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 36px;
+  letter-spacing: 0.18px;
+  color: #010f07;
+}
+
+.admin-home-page__description {
+  margin: 8px 0 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.4px;
+  color: #868686;
+}
+
+/* ---- Actions ---- */
+.admin-home-page__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* Secondary action — same metrics as PrimaryButton (48px height,
+   8px radius, 14px/700 uppercase) but white with a #EEA734
+   outline. Hover inverts to the solid primary treatment.
+   PrimaryButton itself is NOT modified for this. */
+.admin-home-page__secondary-button {
+  width: 100%;
+  height: 48px;
+  box-sizing: border-box;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm); /* same visual radius as PrimaryButton */
+  background-color: #ffffff;
+  font-family: inherit;
+  font-size: var(--text-sm); /* 14px */
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.admin-home-page__secondary-button:hover {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.admin-home-page__secondary-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ---- Uploaded Products ---- */
+.admin-home-page__section-title {
+  margin: 28px 0 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.32px;
+  color: #010f07;
+}
+
+/* Vertical stack — one full-width card per row. */
+.admin-home-page__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* ---- Product card: image + name + expiry only ---- */
+.product-card {
+  border: 1px solid #f1f1f1;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(1, 15, 7, 0.04);
+  overflow: hidden; /* edge-to-edge image clips to the card radius */
+}
+
+/* Edge-to-edge image: width 100%, cover, fixed sensible height —
+   never distorted. */
+.product-card__image {
+  display: block;
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.product-card__body {
+  padding: 12px 14px 14px;
+}
+
+.product-card__name {
+  margin: 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: -0.2px;
+  color: #010f07;
+  overflow-wrap: anywhere;
+}
+
+.product-card__expiry {
+  margin: 4px 0 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.2px;
+}
+
+.product-card__expiry-label {
+  color: #868686;
+}
+
+.product-card__expiry-date {
+  color: #010f07;
+}
+
+/* ============================================================
+   Stage 3C — live backend records: price/meta rows, expired
+   badge, management controls, status banner and list states.
+   ============================================================ */
+
+.product-card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.product-card__price {
+  flex-shrink: 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--color-primary);
+}
+
+.product-card__image--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  color: #868686;
+}
+
+.product-card__expired-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background-color: rgba(217, 48, 37, 0.12);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 700;
+  color: var(--color-error);
+  vertical-align: middle;
+}
+
+.product-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product-card__tag {
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background-color: #f1f1f1;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-size: 11px;
+  line-height: 16px;
+  color: #565656;
+  overflow-wrap: anywhere;
+}
+
+.product-card__tag--location {
+  background-color: rgba(248, 182, 76, 0.15);
+  color: #7a5410;
+}
+
+/* ---- Edit / Delete / inline confirmation ---- */
+.product-card__actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.product-card__confirm-text {
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-error);
+}
+
+.product-card__action {
+  padding: 7px 14px;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  background-color: #ffffff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.product-card__action:hover:not(:disabled) {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.product-card__action:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.product-card__action:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.product-card__action--danger {
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+.product-card__action--danger:hover:not(:disabled) {
+  background-color: var(--color-error);
+  color: #ffffff;
+}
+
+/* ---- Status banner (delete results / failures) ---- */
+.admin-home-page__banner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.admin-home-page__banner--success {
+  background-color: rgba(30, 142, 62, 0.08);
+  border-color: rgba(30, 142, 62, 0.35);
+  color: #17632d;
+}
+
+.admin-home-page__banner--warning {
+  background-color: rgba(238, 167, 52, 0.12);
+  border-color: rgba(238, 167, 52, 0.5);
+  color: #7a5410;
+}
+
+.admin-home-page__banner--error {
+  background-color: rgba(217, 48, 37, 0.06);
+  border-color: rgba(217, 48, 37, 0.35);
+  color: var(--color-error);
+}
+
+.admin-home-page__banner-text {
+  overflow-wrap: anywhere;
+}
+
+.admin-home-page__banner-dismiss {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(1, 15, 7, 0.08);
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ---- List loading / error / empty states ---- */
+.admin-home-page__state {
+  margin-top: 12px;
+  padding: 24px 8px;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.admin-home-page__state--error p {
+  color: var(--color-error);
+}
+
+.admin-home-page__retry {
+  margin-top: 12px;
+  padding: 8px 16px;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  background-color: #ffffff;
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.admin-home-page__retry:hover {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.product-card__price {
+  flex-shrink: 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--color-primary);
+}
+
+.product-card__expiry-date {
+  color: #010f07;
+}
+
+.product-card__expired-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background-color: rgba(217, 48, 37, 0.12);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 700;
+  color: var(--color-error);
+  vertical-align: middle;
+}
+
+.product-card__image--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  color: #868686;
+}
+
+.product-card__tag--location {
+  background-color: rgba(248, 182, 76, 0.15);
+  color: #7a5410;
+}

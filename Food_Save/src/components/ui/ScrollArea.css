@@ -1,0 +1,112 @@
+/* ============================================================
+   ScrollArea — 21st.dev Scroll Area component, adapted from the
+   provided 21st.dev prompt for the existing React JavaScript +
+   plain CSS project.
+
+   Tailwind utility classes from the original scroll-area.tsx are
+   replaced by these semantic classes. The Base UI primitives
+   (Root / Viewport / Scrollbar / Thumb / Corner) keep their own
+   behaviour; these styles only define the visual layer:
+
+   - Root: clips content; the Viewport inside does the scrolling.
+     Sizing (height/width) is decided by the parent page.
+   - Scrollbar: subtle 6px rail; Base UI unmounts it automatically
+     when the content fits, so nothing needs to be hidden here.
+   - Thumb: soft neutral grey from the Food Save palette — never
+     black or visually dominant.
+   ============================================================ */
+
+.food-scroll-area {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+.food-scroll-area__viewport {
+  height: 100%;
+  width: 100%;
+  /* Base UI Viewport is the native scrolling element; the custom
+     Scrollbar/Thumb render on top, so hide the native scrollbars
+     to avoid two visible scrollbars (Base UI docs approach). */
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: none; /* Firefox */
+}
+
+.food-scroll-area__viewport::-webkit-scrollbar {
+  display: none; /* Chrome / Safari / Edge */
+}
+
+/* Vertical scrollbar rail (6px, right side, subtle) */
+.food-scroll-area__scrollbar {
+  display: flex;
+  justify-content: flex-end;
+  width: 6px;
+  padding: 2px 1px;
+  box-sizing: border-box;
+  touch-action: none; /* required so the thumb can be dragged */
+  user-select: none;
+  border-radius: var(--radius-pill);
+  transition: background-color 0.15s ease;
+}
+
+.food-scroll-area__scrollbar:hover,
+.food-scroll-area__scrollbar[data-scrolling] {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Thumb: soft neutral grey (subtle, matches the secondary-text family) */
+.food-scroll-area__thumb {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.22);
+  border-radius: var(--radius-pill);
+  transition: background-color 0.15s ease;
+}
+
+.food-scroll-area__thumb:hover,
+.food-scroll-area__thumb[data-dragging] {
+  background-color: rgba(0, 0, 0, 0.34);
+}
+
+/* Corner between two scrollbars — transparent in this design.
+   Kept for parity with the 21st.dev component structure. */
+.food-scroll-area__corner {
+  background-color: transparent;
+}
+
+/* ---- Rail positioning ----
+   Base UI leaves scrollbar layout to CSS, so pin the vertical rail
+   to the right edge of the relative Root. */
+.food-scroll-area__scrollbar {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  right: 2px;
+}
+
+/* ---- Horizontal orientation (e.g. Filters price-range row) ----
+   The Viewport must scroll horizontally instead of vertically, and
+   the rail sits along the bottom edge. */
+.food-scroll-area[data-orientation='horizontal'] .food-scroll-area__viewport {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.food-scroll-area[data-orientation='horizontal'] .food-scroll-area__scrollbar {
+  top: auto;
+  bottom: 2px;
+  left: 4px;
+  right: 4px;
+  width: auto;
+  height: 6px;
+  padding: 1px 2px;
+  justify-content: flex-start;
+}
+
+.food-scroll-area[data-orientation='horizontal'] .food-scroll-area__thumb {
+  height: 100%;
+  width: auto;
+}
+.food-scroll-area__corner {
+  background-color: transparent;
+}

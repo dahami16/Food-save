@@ -1,0 +1,123 @@
+/* ============================================================
+   FreeDelivery — onboarding screen (/delivery)
+   ------------------------------------------------------------
+   Figma reference: ~375 × 812 (design-reference/02-free-delivery.png).
+   Same onboarding design language as Welcome: Poppins, white
+   background, centred content, 65px logo + 37px "Food Save"
+   brand group, comfortable top/bottom breathing space. The
+   active indicator green #22A45D is an exact project
+   requirement for this screen.
+   ============================================================ */
+
+.free-delivery-page {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  background-color: var(--color-background);
+  padding-bottom: clamp(32px, 5vh, 44px); /* comfortable bottom air */
+}
+
+/* ---- Brand group: Logo + "Food Save" (same treatment as Welcome) ---- */
+.free-delivery-page__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: clamp(28px, 4vh, 36px); /* ~32px top breathing space */
+}
+
+.free-delivery-page__logo {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.free-delivery-page__brand-name {
+  font-family: var(--font-family-base); /* Poppins */
+  font-weight: 400;
+  font-size: 37px;
+  line-height: 40px;
+  color: var(--color-text-primary); /* #000000 */
+  text-align: center;
+}
+
+/* ---- Delivery illustration (horizontally centred, aspect kept) ---- */
+.free-delivery-page__illustration {
+  width: clamp(220px, 72vw, 280px);
+  max-width: 280px;
+  height: auto;
+  display: block;
+  margin-inline: auto;
+  margin-top: clamp(40px, 7vh, 64px);
+}
+
+/* ---- Heading / description / dots / button ---- */
+.free-delivery-page__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.free-delivery-page__heading {
+  width: calc(100% - 48px);
+  max-width: 335px;
+  margin-top: clamp(40px, 7.5vh, 68px);
+  font-family: var(--font-family-base); /* Poppins */
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.25; /* comfortable, close to the design */
+  text-align: center;
+  color: #010f07;
+}
+
+.free-delivery-page__description {
+  width: calc(100% - 48px);
+  max-width: 335px;
+  margin-top: var(--space-4);
+  min-height: 72px; /* 3 text lines — layout stays stable across offers */
+  font-family: var(--font-family-base); /* Poppins */
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: var(--color-text-secondary); /* #868686 */
+}
+
+/* ---- Indicator dots (page-local carousel state) ---- */
+.free-delivery-page__indicators {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+
+.free-delivery-page__dot {
+  width: 8px;
+  height: 4px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background-color: #d8d8d8; /* inactive light grey */
+  cursor: pointer;
+  transition: background-color 0.15s ease, width 0.15s ease;
+}
+
+.free-delivery-page__dot--active {
+  width: 16px; /* slightly wider pill, as in the reference */
+  background-color: #22a45d; /* exact project-required active green */
+}
+
+.free-delivery-page__dot:focus-visible {
+  outline: 2px solid #22a45d;
+  outline-offset: 3px;
+}
+
+.free-delivery-page__content .primary-button {
+  margin-top: clamp(40px, 8vh, 72px);
+}

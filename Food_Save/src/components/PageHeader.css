@@ -1,0 +1,75 @@
+/* ============================================================
+   PageHeader — reusable top navigation header
+   ------------------------------------------------------------
+   Layout: [back slot 44px] [centred title 1fr] [right slot 44px]
+   Equal side columns + equal side padding keep the title
+   mathematically centred relative to the FULL header width,
+   regardless of the back button or right action.
+
+   Figma title values: Yu Gothic UI · 600 · 16px · 24px line
+   height · -0.4px letter spacing · #010F07 · centred.
+   Figma canvas coordinates (top 54/60, left 94, width 187) are
+   NOT reproduced — normal flow + grid alignment only.
+   ============================================================ */
+
+.page-header {
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  min-height: 56px;
+  padding: 8px 20px; /* ~20px horizontal outer spacing */
+  background-color: var(--color-background); /* #FFFFFF */
+}
+
+/* ---- Left slot: back button ---- */
+.page-header__left {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Real semantic button: no default chrome, 44px touch target,
+   visible 24px icon aligned with the header content */
+.page-header__back-button {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start; /* icon sits at the header's 20px padding */
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  color: #010f07; /* simple dark back icon — no circle, no orange */
+  cursor: pointer;
+}
+
+.page-header__back-button:focus-visible {
+  outline: 2px solid #010f07;
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Centred title ---- */
+.page-header__title {
+  justify-self: center;
+  margin: 0; /* reset default heading margin */
+  font-family: 'Yu Gothic UI', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.4px;
+  text-align: center;
+  color: #010f07;
+}
+
+/* ---- Right slot: optional action / balancing space ----
+   Always reserved so the centred title never shifts. */
+.page-header__right {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 44px;
+}

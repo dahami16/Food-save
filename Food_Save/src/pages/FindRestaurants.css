@@ -1,0 +1,229 @@
+/* ============================================================
+   FindRestaurants — location search screen (/restaurants)
+   ------------------------------------------------------------
+   Figma reference: ~375 × 812 (design-reference/05-find-restaurants.png).
+   Plain X close (no PageHeader), centred heading + description,
+   rounded search field (pin + clear) and a location result list
+   with thin dividers. Flow layout only — no absolute positioning.
+   ============================================================ */
+
+.find-restaurants-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+  padding: 0 20px var(--space-6);
+}
+
+/* ---- Close (X) — simple icon button, comfortable tap target ---- */
+.find-restaurants-page__close {
+  width: 44px;
+  height: 44px;
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary); /* #868686 — grey, not black */
+  cursor: pointer;
+}
+
+.find-restaurants-page__close:focus-visible {
+  outline: 2px solid #010f07;
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.find-restaurants-page__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* ---- Heading: centred, single line at 375px ---- */
+.find-restaurants-page__heading {
+  margin-top: 24px;
+  font-family: var(--font-family-base); /* Poppins */
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  text-align: center;
+  text-wrap: balance;
+  color: #010f07;
+}
+
+/* ---- Description: grey, centred, wraps to ~2 lines ---- */
+.find-restaurants-page__description {
+  margin-top: 10px;
+  width: 100%;
+  max-width: 300px;
+  font-family: var(--font-family-base); /* Poppins */
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: var(--color-text-secondary); /* #868686 */
+}
+
+/* ---- Search field: rounded, pin left, clear (x) right ---- */
+.find-restaurants-page__search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  height: 48px;
+  margin-top: 36px;
+  padding: 0 12px 0 16px;
+  box-sizing: border-box;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.15s ease;
+}
+
+.find-restaurants-page__search:focus-within {
+  border-color: var(--color-text-secondary);
+}
+
+.find-restaurants-page__search-icon {
+  flex-shrink: 0;
+  color: var(--color-text-secondary); /* #868686 — grey, not black */
+}
+
+.find-restaurants-page__search-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-family-base); /* Poppins */
+  font-size: 16px;
+  text-align: left;
+  color: var(--color-text-primary);
+}
+
+.find-restaurants-page__search-input::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 1;
+}
+
+.find-restaurants-page__clear {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background-color: #ececec;
+  color: #010f07;
+  cursor: pointer;
+}
+
+.find-restaurants-page__clear:focus-visible {
+  outline: 2px solid #010f07;
+  outline-offset: 2px;
+}
+
+/* ---- Result list ---- */
+
+/* Controlled height for the 21st.dev ScrollArea result region:
+   ~400px on tall phones (375 × 812 target), shrinking gracefully
+   on shorter viewports, so heading/description/search stay visible
+   and the page itself never becomes extremely long. */
+.find-restaurants-page__scroll-area {
+  width: 100%;
+  height: clamp(300px, calc(100dvh - 400px), 400px);
+  margin-top: 4px; /* the ul below keeps its own 28px visual gap */
+}
+
+.find-restaurants-page__results {
+  list-style: none;
+  width: 100%;
+  margin: 28px 0 0;
+  padding: 0;
+}
+
+.find-restaurants-page__result {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-4) 0;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.find-restaurants-page__results li + li .find-restaurants-page__result {
+  border-top: 1px solid var(--color-border); /* thin divider between rows */
+}
+
+.find-restaurants-page__result:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.find-restaurants-page__result:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+.find-restaurants-page__result-icon {
+  flex-shrink: 0;
+  margin-top: 2px; /* aligns with the title line */
+  color: var(--color-text-secondary); /* #868686 — grey, not black */
+}
+
+.find-restaurants-page__result-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.find-restaurants-page__result-title {
+  font-family: var(--font-family-base); /* Poppins */
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--color-text-primary); /* #000000 */
+}
+
+.find-restaurants-page__result-region {
+  font-family: var(--font-family-base); /* Poppins */
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-secondary); /* #868686 */
+}
+
+/* ---- Empty search state ---- */
+.find-restaurants-page__empty {
+  padding: var(--space-5) 0;
+  font-family: var(--font-family-base); /* Poppins */
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+/* ---- Selected location (incl. "All Locations") ---- */
+.find-restaurants-page__result--selected {
+  background-color: rgba(248, 182, 76, 0.15);
+}
+
+.find-restaurants-page__result--selected .find-restaurants-page__result-icon,
+.find-restaurants-page__result--selected .find-restaurants-page__result-title {
+  color: var(--color-primary);
+}
+

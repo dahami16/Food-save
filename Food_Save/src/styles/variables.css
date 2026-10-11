@@ -1,0 +1,57 @@
+/* ============================================================
+   Food Save — Design Tokens
+   Source: user-provided Figma design system values.
+   Only these brand colours are authoritative; do not invent
+   additional brand colours. Screen-specific values (e.g. the
+   dark Expiry Alarm background) will be added when the user
+   provides the exact hex.
+   ============================================================ */
+
+:root {
+  /* ---- Brand colours (from Figma) ---- */
+  --color-primary: #eea734; /* primary buttons, active toggles, selected states, key highlights */
+  --color-background: #ffffff; /* app background */
+  --color-text-primary: #000000; /* primary text */
+  --color-text-secondary: #868686; /* secondary text */
+
+  /* ---- Neutral / functional colours (non-brand) ---- */
+  --color-page-backdrop: #f3f4f6; /* desktop letterbox behind .app-shell only */
+  --color-surface: #ffffff;
+  --color-border: #e5e5e5;
+  --color-error: #d93025; /* form validation only — adjust if Figma differs */
+  --color-success: #1e8e3e; /* success confirmation — adjust if Figma differs */
+
+  /* ---- Typography ----
+     Poppins (Figma font) — self-hosted via @fontsource/poppins,
+     weights 400/700 imported in main.jsx. */
+  --font-family-base: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.375rem; /* 22px */
+  --text-2xl: 1.75rem; /* 28px */
+
+  /* ---- Spacing scale (4px base) ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+
+  /* ---- Radii ---- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* ---- Shadows ---- */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-shell: 0 0 24px rgba(0, 0, 0, 0.12);
+
+  /* ---- Layout ---- */
+  --app-max-width: 430px; /* mobile-first shell: 375 / 390 / 430 targets */
+}

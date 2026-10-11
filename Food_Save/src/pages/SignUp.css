@@ -1,0 +1,141 @@
+/* ============================================================
+   SignUp — Create Account screen (/signup)
+   ------------------------------------------------------------
+   Figma reference: ~375 × 812 (design-reference/04-create-account.png).
+   Left-aligned heading + intro; form fields and both button
+   types share the same 335px max-width column. Flow layout
+   only — no absolute positioning, no Food Save page title.
+   ============================================================ */
+
+.sign-up-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+  padding-bottom: var(--space-6);
+}
+
+.sign-up-page__content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 20px; /* standard page horizontal padding */
+}
+
+/* ---- Main heading: LEFT aligned, Poppins 400 · ~35px/40px · #010F07 ---- */
+.sign-up-page__heading {
+  margin-top: clamp(20px, 3.5vh, 36px);
+  font-family: var(--font-family-base); /* Poppins */
+  font-weight: 400;
+  font-size: 35px;
+  line-height: 40px;
+  text-align: left;
+  color: #010f07;
+}
+
+/* ---- Intro: grey description + orange "Already have account?" ---- */
+.sign-up-page__intro {
+  margin-top: var(--space-2);
+  max-width: 335px;
+  font-family: var(--font-family-base); /* Poppins */
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  color: var(--color-text-secondary); /* #868686 */
+}
+
+.sign-up-page__signin-link {
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--color-primary); /* #EEA734 */
+  cursor: pointer;
+}
+
+.sign-up-page__signin-link:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Form column: same width as the buttons ---- */
+.sign-up-page__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 335px;
+  margin-top: var(--space-5);
+}
+
+.sign-up-page__form .form-field {
+  width: 100%;
+}
+
+.sign-up-page__form .form-field + .form-field {
+  margin-top: var(--space-5);
+}
+
+.sign-up-page__form .primary-button {
+  margin-top: var(--space-6);
+}
+
+/* ---- Terms / Privacy text — centred, wraps to ~2 lines ---- */
+.sign-up-page__terms {
+  align-self: center;
+  width: 100%;
+  max-width: 300px;
+  margin-top: var(--space-4);
+  font-family: var(--font-family-base); /* Poppins */
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  text-align: center;
+  color: var(--color-text-secondary); /* #868686 */
+}
+
+/* ---- "Or" divider text — centred ---- */
+.sign-up-page__or {
+  align-self: center;
+  margin-top: var(--space-5);
+  font-family: var(--font-family-base); /* Poppins */
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+  color: #3a3a3a;
+}
+
+/* ---- Social buttons: same 335px column, centred ---- */
+.sign-up-page__social {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  align-self: center;
+  width: 100%;
+  max-width: 335px;
+  margin-top: var(--space-5);
+}
+
+.sign-up-page__social .social-auth-button {
+  width: 100%;
+}
+
+/* ---- Page-level auth error (compact, above SIGN UP) ---- */
+.sign-up-page__auth-error {
+  margin-top: var(--space-3);
+  font-size: 13px;
+  color: var(--color-error);
+  text-align: center;
+}
+
+/* ---- Confirmation success alert (session: null path) ---- */
+.sign-up-page__success {
+  margin-top: var(--space-5);
+  max-width: 335px;
+}

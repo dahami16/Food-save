@@ -1,0 +1,7 @@
+# Food Save backend — minimum runtime dependencies (Stage 2A).
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.30,<1.0
+supabase>=2.0,<3.0
+python-dotenv>=1.0,<2.0
+# Multipart form parsing for admin image uploads (Stage 3B).
+python-multipart>=0.0.9,<1.0

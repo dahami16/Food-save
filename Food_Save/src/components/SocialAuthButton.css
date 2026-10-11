@@ -1,0 +1,87 @@
+/* ============================================================
+   SocialAuthButton — reusable Facebook / Google auth button
+   ------------------------------------------------------------
+   Figma spec: 335px max width · 44px height · radius 8px.
+   Facebook: #395998 + subtle shadow 0 12px 24px rgba(57,89,152,.06)
+   Google:   #4285F4
+   Text: "Yu Gothic UI" 600 · 12px/20px · 0.8px letter spacing ·
+   uppercase · #FFFFFF · centred.
+   Grid 44px / 1fr / 44px keeps the label visually centred while
+   the logo tile sits on the left.
+   ============================================================ */
+
+.social-auth-button {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  width: 100%;
+  max-width: 335px;
+  height: 44px;
+  box-sizing: border-box;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+}
+
+/* ---- Provider variants ---- */
+.social-auth-button--facebook {
+  background-color: #395998;
+  box-shadow: 0 12px 24px rgba(57, 89, 152, 0.06); /* #395998 @ ~6% */
+}
+
+.social-auth-button--google {
+  background-color: #4285f4;
+}
+
+/* ---- White rounded icon tile (left slot) ---- */
+.social-auth-button__icon-wrapper {
+  justify-self: center;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+
+.social-auth-button__icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain; /* never stretch the brand artwork */
+}
+
+/* ---- Centred label ---- */
+.social-auth-button__label {
+  justify-self: center;
+  font-family: 'Yu Gothic UI', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  text-align: center;
+  color: #ffffff;
+}
+
+/* ---- Interaction states ---- */
+.social-auth-button:hover:not(:disabled) {
+  filter: brightness(0.95);
+}
+
+.social-auth-button:active:not(:disabled) {
+  filter: brightness(0.9);
+  transform: translateY(1px);
+}
+
+.social-auth-button:focus-visible {
+  outline: 2px solid #010f07;
+  outline-offset: 2px;
+}
+
+.social-auth-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

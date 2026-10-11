@@ -1,0 +1,115 @@
+/* ============================================================
+   Welcome — root screen (/)
+   ------------------------------------------------------------
+   Figma reference: 375 × 812 (design-reference/01-welcome.png).
+   Targets at 375px: circle 437px cropped upper-left @10%,
+   brand upper section (logo 65px), illustration ~213.49px wide
+   starting ~y212. Spacing refinement: ~32px top breathing room
+   before the brand, ~44px visible white space below GET STARTED,
+   and a moderate illustration→Welcome gap (~85px, reduced from
+   ~146px) to fund the extra top/bottom air. Implemented with
+   responsive flow (flex + margins + vh clamps) — no per-element
+   absolute positioning; only the decorative circle is absolute.
+   ============================================================ */
+
+.welcome-page {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden; /* crops the oversized circle at the page edges */
+  background-color: var(--color-background);
+  padding-bottom: clamp(32px, 5vh, 44px); /* breathing room when content scrolls */
+}
+
+/* ---- Decorative circle background (lowest layer) ----
+   375px targets: ~437px square, top ~-49px, left ~-101px
+   (≈ -27% of page width), opacity 10%. Width is % of the page
+   so the crop relationship holds at 390px / 430px too. */
+.welcome-page__circle {
+  position: absolute;
+  top: -49px;
+  left: -27%;
+  width: 116.5%;
+  max-width: none; /* override the global img cap — intentional oversize */
+  height: auto;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---- Brand group: Logo + "Food Save" ---- */
+.welcome-page__brand {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: clamp(28px, 4vh, 36px); /* ~32px top breathing space @812h */
+}
+
+.welcome-page__logo {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.welcome-page__brand-name {
+  font-family: var(--font-family-base); /* Poppins */
+  font-weight: 400;
+  font-size: 37px;
+  line-height: 40px;
+  color: var(--color-text-primary); /* #000000 */
+  text-align: center;
+}
+
+/* ---- Main illustration ---- */
+.welcome-page__illustration {
+  position: relative;
+  z-index: 1;
+  width: clamp(200px, 57vw, 213.49px); /* ~213.49px at 375px shell */
+  height: auto;
+  display: block;
+  margin-inline: auto;
+  margin-top: clamp(96px, 14.5vh, 132px); /* illustration begins ~y212 @812h */
+}
+
+/* ---- Heading / description / button ---- */
+.welcome-page__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.welcome-page__heading {
+  width: calc(100% - 48px);
+  max-width: 327px;
+  margin-top: clamp(56px, 10.5vh, 92px); /* moderate illustration→heading gap (~85px @812h, was ~146px) */
+  font-family: var(--font-family-base); /* Poppins */
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 32px;
+  text-align: center;
+  color: #3a3a3a;
+}
+
+.welcome-page__description {
+  width: calc(100% - 48px);
+  max-width: 327px;
+  margin-top: var(--space-5); /* description ~y559 @812h */
+  font-family: var(--font-family-base); /* Poppins */
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #3a3a3a;
+}
+
+.welcome-page__content .primary-button {
+  margin-top: clamp(32px, 6vh, 52px); /* button ~y720 @812h, leaving ~44px white below */
+}

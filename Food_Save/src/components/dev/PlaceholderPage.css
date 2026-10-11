@@ -1,0 +1,25 @@
+/* ============================================================
+   TEMPORARY Stage 1 styles for the dev-only PlaceholderPage.
+   Removed automatically once real pages replace all routes.
+   ============================================================ */
+
+.placeholder-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.placeholder-page__title {
+  font-size: var(--text-xl);
+  color: var(--color-text-primary);
+}
+
+.placeholder-page__hint {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}

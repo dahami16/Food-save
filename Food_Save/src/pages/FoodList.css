@@ -1,0 +1,497 @@
+/* ============================================================
+   FoodList — Food Category Search page (/food)
+   Visual reference: design-reference/08-food-list.png
+   375px primary target; 2-column grid; 160px cards @375.
+   ============================================================ */
+
+.food-list-page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.food-list-page__content {
+  flex: 1;
+  width: 100%;
+  padding: 24px 20px 8px; /* category area scrolls internally now, so only
+                               a small bottom margin is needed */
+}
+
+/* ---- Search header: icon + heading row ---- */
+.food-list-page__search-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.food-list-page__search-icon {
+  flex-shrink: 0;
+  color: #868686;
+}
+
+/* Real search input replacing the visual heading — same typography,
+   no box, transparent background, minimal appearance per Figma. */
+.food-list-page__search-input {
+  flex: 1;
+  min-width: 0;
+  height: 40px; /* matches the Filters button so the row stays aligned */
+  box-sizing: border-box;
+  padding: 0 12px;
+  border: 1px solid var(--color-border); /* subtle light-gray resting border */
+  border-radius: var(--radius-sm);
+  background-color: #ffffff;
+  font-family: 'Yu Gothic UI', 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 32px;
+  letter-spacing: 0.14px;
+  color: #181818;
+  outline: none;
+}
+
+.food-list-page__search-input::placeholder {
+  color: #010f07;
+  opacity: 1;
+}
+
+/* Hide the native WebKit clear button so the field stays minimal */
+.food-list-page__search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.food-list-page__search-input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* ---- Section text ---- */
+.food-list-page__section-title {
+  margin-top: 16px;
+  margin-left: 10px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.4px;
+  color: #010f07;
+}
+
+/* ---- Scrollable category area (existing 21st.dev ScrollArea) ----
+   Height shows exactly the first 3 rows (6 cards) before scrolling:
+   3 × card + 2 × 14px gap. Card width = (min(100vw, shell) − 55px)/2,
+   so the height tracks the responsive card size at 375/390/430px. */
+.food-list-page__category-scroll {
+  margin-top: 16px;
+  height: calc((min(100vw, 430px) - 55px) * 1.5 + 110px); /* 508px @375 */
+}
+
+/* The inner ScrollArea fills the wrapper's fixed height so the
+   category grid scrolls inside it. */
+.food-list-page__category-scroll-inner {
+  height: 100%;
+}
+
+/* ---- Two-column category grid ---- */
+.food-category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 15px; /* vertical / horizontal — refined vs reference PNG */
+}
+
+.food-category-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  aspect-ratio: 1 / 1.2; /* 160x160 @375; stays square at 390/430 */
+  padding: 0;
+  border: none;
+  background: #000;
+  cursor: pointer;
+}
+
+.food-category-card__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Separate 50% black overlay ABOVE the image (never fade the text) */
+.food-category-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.food-category-card__label {
+  position: absolute;
+  inset: 0;
+  z-index: 1; /* above the overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  color: #ffffff;
+  font-family: 'Yu Gothic UI', 'Inter', sans-serif;
+  font-weight: 300;
+  font-size: 19px;
+  line-height: 24px;
+  text-align: center;
+  /* "Breakfast & Brunch" wraps cleanly to two centred lines */
+  overflow-wrap: break-word;
+}
+
+/* ---- No-results message (shown inside the ScrollArea) ---- */
+.food-list-page__no-results {
+  padding: 48px 16px;
+  font-family: 'Yu Gothic UI', 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  color: #868686;
+  text-align: center;
+}
+
+/* ============================================================
+   Stage 3C — real food listings, filter chips and states
+   ============================================================ */
+
+/* ---- Selected backend category (grid card) ---- */
+.food-category-card--active {
+  outline: 3px solid var(--color-primary);
+  outline-offset: -3px;
+}
+
+/* ---- Active filter chips ---- */
+.food-list-page__chips {
+  display: flex;
+  flex-wrap: nowrap; /* single horizontal row — never wrap to multiple lines */
+  align-items: center;
+  gap: 8px; /* consistent spacing between chips */
+  margin-top: 16px;
+  max-width: 100%;
+  overflow-x: auto; /* scroll horizontally when chips overflow the row */
+  padding-bottom: 6px; /* breathing room so the scrollbar clears the chips */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; /* Firefox: subtle, compact scrollbar */
+  scrollbar-color: #d8d8d8 transparent;
+}
+
+/* Subtle, compact scrollbar (WebKit/Blink) */
+.food-list-page__chips::-webkit-scrollbar {
+  height: 6px;
+}
+
+.food-list-page__chips::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.food-list-page__chips::-webkit-scrollbar-thumb {
+  background-color: #d8d8d8;
+  border-radius: 3px;
+}
+
+.food-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0; /* keep each chip fully readable; never shrink or overlap */
+  max-width: 100%;
+  padding: 6px 10px;
+  border-radius: var(--radius-pill);
+  background-color: rgba(248, 182, 76, 0.18);
+  border: 1px solid var(--color-primary);
+  font-family: 'Yu Gothic UI', 'Inter', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: #010f07;
+  overflow-wrap: anywhere;
+}
+
+.food-filter-chip__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(1, 15, 7, 0.7);
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.food-filter-chip__remove:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.food-list-page__clear-filters {
+  padding: 6px 10px;
+  border: none;
+  background: none;
+  font-family: 'Yu Gothic UI', 'Inter', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.food-list-page__clear-filters:hover {
+  color: var(--color-primary);
+}
+
+/* ---- Available Food section ---- */
+.food-list-page__food {
+  margin-top: 24px;
+}
+
+.food-list-page__food-title {
+  margin-left: 0;
+}
+
+.food-list-page__food-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* ---- Loading / error / empty states ---- */
+.food-list-page__status {
+  margin-top: 12px;
+  padding: 32px 16px;
+  font-family: 'Yu Gothic UI', 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 22px;
+  color: #868686;
+  text-align: center;
+}
+
+.food-list-page__status--error p {
+  color: var(--color-error);
+}
+
+.food-list-page__retry {
+  margin-top: 12px;
+  padding: 8px 16px;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  background-color: #ffffff;
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.food-list-page__retry:hover {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+/* ---- Food item card (customer) ---- */
+.food-item-card {
+  border: 1px solid #f1f1f1;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(1, 15, 7, 0.04);
+  overflow: hidden;
+}
+
+.food-item-card__image {
+  display: block;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.food-item-card__image-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 180px;
+  background-color: #f5f5f5;
+  color: #868686;
+}
+
+.food-item-card__body {
+  padding: 12px 14px 14px;
+}
+
+.food-item-card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.food-item-card__name {
+  margin: 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  letter-spacing: -0.2px;
+  color: #010f07;
+  overflow-wrap: anywhere;
+}
+
+.food-item-card__price {
+  flex-shrink: 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--color-primary);
+}
+
+.food-item-card__expiry {
+  margin-top: 4px;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.food-item-card__expiry-label {
+  color: #868686;
+}
+
+.food-item-card__expiry-date {
+  color: #010f07;
+}
+
+.food-item-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.food-item-card__tag {
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  background-color: #f1f1f1;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-size: 11px;
+  line-height: 16px;
+  color: #565656;
+  overflow-wrap: anywhere;
+}
+
+.food-item-card__tag--location {
+  background-color: rgba(248, 182, 76, 0.15);
+  color: #7a5410;
+}
+
+/* ============================================================
+   Stage 3C.1 — compact header toolbar, Filters button and the
+   responsive 2-column food grid (replaces the old static
+   category-image grid and full-width list).
+   ============================================================ */
+
+/* ---- Toolbar (search + Filters share one flexible row) ---- */
+.food-list-page__filters-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0; /* keeps natural width; the search input flexes beside it */
+  height: 30px;
+  padding: 0 16px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-primary);
+  font-family: 'Yu Gothic UI', 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: var(--text-sm);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #ffffff;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.food-list-page__filters-button:hover {
+  opacity: 0.9;
+}
+
+.food-list-page__filters-button:focus-visible {
+  outline: 2px solid #010f07;
+  outline-offset: 2px;
+}
+
+/* ---- Available Food heading (reduced, bold, responsive) ---- */
+.food-list-page__food-title {
+  margin-top: 20px;
+  margin-bottom: 12px;
+  font-family: 'Yu Gothic UI', 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: clamp(15px, 4vw, 18px);
+  line-height: 22px;
+  letter-spacing: -0.2px;
+  color: #010f07;
+}
+
+/* ---- Food grid: always two columns, even on wider screens ----
+   Uses repeat(2, minmax(0, 1fr)) so both columns share the width
+   evenly, cards never overflow their columns, and no breakpoint
+   ever allows three or more cards in a row. */
+.food-list-page__food-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* ---- Compact cards inside the grid (override the full-width defaults) ---- */
+.food-list-page__food-grid .food-item-card__image,
+.food-list-page__food-grid .food-item-card__image-fallback {
+  height: 110px;
+}
+
+.food-list-page__food-grid .food-item-card__body {
+  padding: 8px 10px 10px;
+}
+
+.food-list-page__food-grid .food-item-card__header {
+  display: block;
+}
+
+.food-list-page__food-grid .food-item-card__name {
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: -0.2px;
+}
+
+.food-list-page__food-grid .food-item-card__price {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.food-list-page__food-grid .food-item-card__expiry {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.food-list-page__food-grid .food-item-card__tags {
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.food-list-page__food-grid .food-item-card__tag {
+  font-size: 10px;
+  line-height: 14px;
+  padding: 2px 6px;
+}

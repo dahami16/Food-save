@@ -1,0 +1,62 @@
+/* ============================================================
+   PrimaryButton — main reusable action button
+   ------------------------------------------------------------
+   Figma spec:
+   background #EEA734 · text #FFFFFF · height 48px
+   max-width 335px (fluid below) · radius 8px
+   font-size 14px · font-weight 700 · uppercase · centred
+
+   The parent page controls positioning and spacing.
+   This component adds no page-specific margins.
+   ============================================================ */
+
+.primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 335px; /* Figma width, shrinks safely on narrow screens */
+  height: 48px;
+  box-sizing: border-box;
+  padding: 0 var(--space-4);
+  border: none;
+  border-radius: var(--radius-sm); /* 8px */
+  background-color: var(--color-primary); /* #EEA734 */
+  color: #ffffff;
+  font-family: inherit;
+  font-size: var(--text-sm); /* 14px */
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.1s ease, opacity 0.15s ease;
+}
+
+/* Hover: subtle change derived from the same primary colour */
+.primary-button:hover:not(:disabled) {
+  filter: brightness(0.95);
+}
+
+/* Active: subtle pressed feedback */
+.primary-button:active:not(:disabled) {
+  filter: brightness(0.9);
+  transform: translateY(1px);
+}
+
+/* Focus: clear, accessible keyboard focus ring */
+.primary-button:focus-visible {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 2px;
+}
+
+/* Disabled: reduced emphasis, non-clickable cursor */
+.primary-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* fullWidth variant: use the full parent width (never overflow it) */
+.primary-button--full-width {
+  max-width: 100%;
+}

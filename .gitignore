@@ -1,0 +1,30 @@
+# ---- Environment & secrets (never commit real values) ----
+.env
+backend/.env
+Food_Save/.env
+Food_Save/.env.*
+!Food_Save/.env.example
+
+# ---- Python ----
+backend/venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# ---- Frontend / Node ----
+Food_Save/node_modules/
+Food_Save/dist/
+Food_Save/dist-ssr/
+Food_Save/*.local
+
+# ---- Editors / OS ----
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

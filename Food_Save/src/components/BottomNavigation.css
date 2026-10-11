@@ -1,0 +1,86 @@
+/* ============================================================
+   BottomNavigation — reusable primary bottom navigation bar
+   ------------------------------------------------------------
+   Figma reference: supplied bottom-navigation sample (~375 × 88px).
+   Four evenly distributed items, icon above label:
+     Home (Utensils) · Search (Search) · Orders (ReceiptText) ·
+     Profile (UserRound)
+
+   Colours:
+     default               #868686  (var(--color-text-secondary))
+     hover / focus / active #EEA734 (var(--color-primary))
+
+   Icons use lucide-react currentColor, so one `color` rule on the
+   item styles both the icon and the label.
+
+   The black iPhone home-indicator strip from the reference SVG is
+   device UI and is deliberately NOT recreated.
+
+   Sticky positioning keeps the bar at the bottom of the viewport
+   while staying constrained inside the centred 430px app shell —
+   no fixed positioning that could escape the shell on desktop.
+   ============================================================ */
+
+.bottom-navigation {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* four equal-width items */
+  align-items: stretch;
+  width: 100%;
+  height: 88px; /* main navigation area (no device home indicator) */
+  background-color: var(--color-background); /* #FFFFFF */
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.04); /* subtle top shadow */
+}
+
+/* ---- Item: icon over small gap over label, all centred ---- */
+.bottom-navigation__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 4px;
+  box-sizing: border-box;
+  min-width: 0;
+  color: var(--color-text-secondary); /* #868686 default — icon + label */
+  text-decoration: none;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+/* Presentation-only items (Home, Orders): no navigation yet */
+.bottom-navigation__item--static {
+  cursor: default;
+}
+
+/* Hover: icon and label briefly -> #EEA734 */
+.bottom-navigation__item:hover {
+  color: var(--color-primary);
+}
+
+/* Keyboard focus: same highlight + visible focus ring */
+.bottom-navigation__item:focus-visible {
+  color: var(--color-primary);
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Current route: Search on /food, Profile on /account */
+.bottom-navigation__item--active {
+  color: var(--color-primary);
+}
+
+/* ---- Label typography (exact Figma values) ---- */
+.bottom-navigation__label {
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 300;
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0.1px;
+  text-align: center;
+  white-space: nowrap; /* labels never wrap at 375px+ */
+}

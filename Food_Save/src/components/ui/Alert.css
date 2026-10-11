@@ -1,0 +1,82 @@
+/* ============================================================
+   Alert — adapted from the 21st.dev Alert component to plain CSS
+   using the food-alert BEM classes and Food Save tokens.
+   (No Tailwind, no class-variance-authority.)
+   ============================================================ */
+
+/* ---- Overlay: dims the page and centres the card ----
+   Rendered through createPortal(document.body), so these styles
+   always apply at the top level of the viewport. */
+.food-alert-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(1, 15, 7, 0.35);
+}
+
+/* ---- Card: polished notification/modal card ---- */
+.food-alert {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 40px);
+  max-width: 340px;
+  box-sizing: border-box;
+  padding: 20px;
+  border: 1px solid #f1f1f1;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+}
+
+/* ---- Icon + text row ---- */
+.food-alert__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.food-alert__icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--color-primary); /* #EEA734 success accent */
+}
+
+.food-alert__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.food-alert__title {
+  margin: 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+  color: #010f07;
+}
+
+.food-alert__description {
+  margin: 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.2px;
+  color: #868686;
+}
+
+/* ---- Action row: hosts the action element (PrimaryButton in
+   the Add Food success alert) — only owns the spacing. ---- */
+.food-alert__action {
+  width: 100%;
+  margin-top: 16px;
+}

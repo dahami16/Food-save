@@ -1,0 +1,120 @@
+/* ============================================================
+   FormField — reusable minimal underline input
+   ------------------------------------------------------------
+   Structure: LABEL / value + right icon / thin grey underline.
+   Never a boxed input. Width is 100% — the parent page controls
+   the available width and spacing between fields.
+   ============================================================ */
+
+.form-field {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ---- Label ---- */
+.form-field__label {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-size: var(--text-xs); /* 12px */
+  font-weight: 400; /* light/regular */
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--color-text-secondary); /* #868686 */
+}
+
+/* ---- Input row + underline ----
+   The underline is the wrapper's bottom border: light grey in
+   the normal state (never the primary orange), darkening subtly
+   on focus for keyboard clarity. */
+.form-field__input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--color-border);
+  transition: border-color 0.15s ease;
+}
+
+.form-field__input-wrapper:focus-within {
+  border-bottom-color: var(--color-text-secondary);
+}
+
+/* Error state: underline turns error colour */
+.form-field--error .form-field__input-wrapper {
+  border-bottom-color: var(--color-error);
+}
+
+/* ---- Input ---- */
+.form-field__input {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: var(--text-base); /* 16px — larger/darker than the label */
+  text-align: left;
+  color: var(--color-text-primary); /* #000000 */
+}
+
+.form-field__input::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 1;
+}
+
+.form-field__input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---- Right-side icons ---- */
+.form-field__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Success tick (parent-controlled via showSuccess) */
+.form-field__success-icon {
+  color: var(--color-primary); /* #EEA734 */
+}
+
+/* Password visibility toggle: real button, larger tap area,
+   default chrome removed so only the icon is visible */
+.form-field__password-toggle {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary); /* grey — never the primary orange */
+  cursor: pointer;
+}
+
+.form-field__password-toggle:focus-visible {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Messages under the underline ---- */
+.form-field__error {
+  margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--color-error);
+}
+
+.form-field__helper {
+  margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+}

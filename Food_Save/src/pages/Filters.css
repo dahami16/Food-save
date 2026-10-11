@@ -1,0 +1,270 @@
+/* ============================================================
+   Filters — customer filter screen (/filters)
+   Reference: design-reference/06-filters.png
+   White page · PageHeader · 3 sections (Categories, Dietary,
+   Price Range) · Apply Filters pinned near the bottom.
+   ============================================================ */
+
+.filters-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background);
+}
+
+.filters-page__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8); /* comfortable section spacing */
+  padding: var(--space-5) 20px 0;
+}
+
+/* ---- Section header: title left · CLEAR ALL right ---- */
+.filter-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.filter-section__title {
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #010f07;
+}
+
+.filter-section__clear {
+  border: none;
+  background: none;
+  padding: 4px 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: #010f07;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.filter-section__clear:hover {
+  opacity: 0.6;
+}
+
+.filter-section__clear:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---- Category / Dietary option grid ---- */
+.filter-section__options-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.filter-option {
+  height: 44px;
+  border: none;
+  border-radius: 6px;
+  padding: 0 4px;
+  background-color: #f1f1f1;
+  color: #868686;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.filter-option:hover:not(.filter-option--selected) {
+  background-color: rgba(248, 182, 76, 0.75);
+  color: #ffffff;
+}
+
+.filter-option--selected {
+  background-color: #f8b64c;
+  color: #ffffff;
+}
+
+.filter-option:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ---- Price Range: horizontal row of 64px circles ----
+   Inside the 21st.dev ScrollArea (horizontal); the circles use
+   flex: 0 0 64px so they never shrink or wrap. */
+.filters-page__price-scroll {
+  width: 100%;
+  height: 80px;
+}
+
+.filters-page__price-options {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+  width: max-content; /* allows the row to overflow horizontally inside the ScrollArea */
+  padding-right: 4px;
+}
+
+.filter-price-circle {
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px solid #eeeeee;
+  background-color: #f1f1f1;
+  color: #010f07;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.filter-price-circle:hover:not(.filter-price-circle--selected) {
+  background-color: rgba(248, 182, 76, 0.75);
+  color: #ffffff;
+}
+
+.filter-price-circle--selected {
+  background-color: #f8b64c;
+  color: #ffffff;
+  border-color: #f8b64c;
+}
+
+.filter-price-circle:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ---- Apply Filters: near the bottom on tall screens ---- */
+.filters-page__apply {
+  padding: var(--space-5) 20px;
+  padding-bottom: max(var(--space-5), env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: center;
+  margin-top: auto;
+}
+
+/* ============================================================
+   Stage 3C — catalog-driven options: loading / error states and
+   price labels from GET /api/catalog/options (e.g. "A$0–A$4.99"
+   needs to wrap inside the 64px circle instead of clipping).
+   ============================================================ */
+
+.filters-page__status {
+  padding: 32px 8px;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.filters-page__status--error p {
+  color: var(--color-error);
+}
+
+.filters-page__retry {
+  margin-top: 12px;
+  padding: 8px 16px;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  background-color: #ffffff;
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.filters-page__retry:hover {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+/* Catalog price labels are longer than the old "$" glyphs — let them
+   wrap on two centred lines while keeping the circle metrics. */
+.filter-price-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  white-space: normal;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+/* ============================================================
+   Stage 3C.1 — Location section: a full-width "Choose Location"
+   button that opens the existing /restaurants screen, plus the
+   supporting hint text.
+   ============================================================ */
+.filters-page__location-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 48px;
+  box-sizing: border-box;
+  padding: 0 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: #ffffff;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-weight: 600;
+  font-size: 15px;
+  color: #010f07;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.filters-page__location-button:hover {
+  border-color: var(--color-primary);
+}
+
+.filters-page__location-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.filters-page__location-button svg {
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.filters-page__location-button-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.filters-page__location-hint {
+  margin: 8px 0 0;
+  font-family: 'Yu Gothic UI', var(--font-family-base);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-text-secondary);
+}
+
